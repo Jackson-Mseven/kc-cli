@@ -4,7 +4,7 @@ const create = async () => {
   const { name, type } = await prompts([{
     type: 'text',
     name: 'name',
-    message: 'What is the name of your project?',
+    message: "What's the name of your project?",
     initial: __dirname.split('/').pop(),
   },
     {
@@ -12,9 +12,9 @@ const create = async () => {
       name: 'type',
       message: 'What is the type of your project?',
       choices: [
-        { title: 'React', value: 'react' },
-        { title: 'Vue', value: 'vue' },
-        { title: 'Angular', value: 'angular' },
+        { title: 'Umi', value: 'umi' },
+        { title: 'Vite', value: 'vite' },
+        { title: 'Next', value: 'next' },
       ],
     },
   ]);
