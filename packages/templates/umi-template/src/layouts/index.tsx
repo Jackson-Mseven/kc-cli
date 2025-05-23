@@ -1,78 +1,73 @@
-import MenuLogo from '@/components/MenuLogo';
-import {
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from '@ant-design/icons';
-import { ConfigProvider, Layout, Menu, theme } from 'antd';
-import React from 'react';
-import { Outlet } from 'umi';
-import themeComponents from './theme/components';
-
-const { Header, Content, Footer, Sider } = Layout;
-
-const items = [
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  UserOutlined,
-].map((icon, index) => ({
-  key: String(index + 1),
-  icon: React.createElement(icon),
-  label: `nav ${index + 1}`,
-}));
+import { customGetRoutes } from '@/utils';
+import transformRoutesToMenu from '@/utils/layout/transformRoutesToMenu';
+import { GithubOutlined } from '@ant-design/icons';
+import { ProLayout } from '@ant-design/pro-components';
+import { useBoolean } from 'ahooks';
+import { ConfigProvider, FloatButton, theme } from 'antd';
+import { useMemo, useRef, useState } from 'react';
+import { NavLink, Outlet, useNavigate } from 'umi';
+import logoWithoutText from '../../public/logo-without-text.webp';
+import logo from '../../public/logo.webp';
+import LangIcon from './components/Icons/LangIcon';
+import ThemeIcon from './components/Icons/ThemeIcon';
+import LoadingContext from './contexts/LoadingContext';
+import { ProLayoutAction } from './types';
 
 export default function GlobalLayout() {
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
+  const navigate = useNavigate();
+  const routes = customGetRoutes();
+  const actionRef = useRef<ProLayoutAction>(undefined);
+
+  const [loading, setLoading] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+  const [isDarkTheme, { toggle: toggleIsDarkTheme }] = useBoolean(false);
+
+  const menuData = useMemo(() => transformRoutesToMenu(routes), [routes]);
 
   return (
     <ConfigProvider
       theme={{
-        components: {
-          ...themeComponents,
-        },
+        algorithm: isDarkTheme ? theme.darkAlgorithm : theme.defaultAlgorithm,
       }}
     >
-      <Layout>
-        <Sider
-          breakpoint="lg"
-          collapsedWidth="0"
-          onBreakpoint={(broken) => {
-            console.log(broken);
+      <LoadingContext.Provider value={{ loading, setLoading }}>
+        <ProLayout
+          actionRef={actionRef}
+          title="kc-umi-template"
+          logo={collapsed ? logoWithoutText : logo}
+          loading={loading}
+          menuDataRender={() => menuData}
+          menuItemRender={(item, dom) => (
+            <NavLink to={item.path || '/'}>{dom}</NavLink>
+          )}
+          avatarProps={{
+            icon: 'K',
+            title: 'Kincy',
+            size: 'small',
           }}
-          onCollapse={(collapsed, type) => {
-            console.log(collapsed, type);
+          actionsRender={() => [
+            <LangIcon />,
+            <ThemeIcon
+              isDarkTheme={isDarkTheme}
+              toggleIsDarkTheme={toggleIsDarkTheme}
+            />,
+          ]}
+          onCollapse={(collapsed) => {
+            setCollapsed(collapsed);
+          }}
+          onMenuHeaderClick={() => {
+            navigate('/');
           }}
         >
-          <MenuLogo />
-          <Menu
-            theme="dark"
-            mode="inline"
-            defaultSelectedKeys={['4']}
-            items={items}
+          <Outlet />
+          <FloatButton
+            icon={<GithubOutlined />}
+            onClick={() => {
+              window.open('https://github.com/Jackson-Mseven/kc-cli');
+            }}
           />
-        </Sider>
-        <Layout>
-          <Header style={{ padding: 0, background: colorBgContainer }} />
-          <Content style={{ margin: '24px 16px 0' }}>
-            <div
-              style={{
-                padding: 24,
-                minHeight: 360,
-                background: colorBgContainer,
-                borderRadius: borderRadiusLG,
-              }}
-            >
-              <Outlet />
-            </div>
-          </Content>
-          <Footer style={{ textAlign: 'center' }}>
-            Ant Design ©{new Date().getFullYear()} Created by Ant UED
-          </Footer>
-        </Layout>
-      </Layout>
+        </ProLayout>
+      </LoadingContext.Provider>
     </ConfigProvider>
   );
 }
