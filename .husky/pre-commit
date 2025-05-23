@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+# 禁止使用 --no-verify 跳过检查
+if [ -n "$HUSKY_BYPASS" ]; then
+  echo "ERROR: 禁止绕过 Git 钩子检查"
+  exit 1
+fi
+
+npx lint-staged
