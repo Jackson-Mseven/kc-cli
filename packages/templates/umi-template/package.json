@@ -3,7 +3,9 @@
   "author": "kincy <bill714@foxmail.com>",
   "scripts": {
     "dev": "umi dev",
+    "dev:analyze": "ANALYZE=1 umi dev",
     "build": "umi build",
+    "build:analyze": "ANALYZE=1 umi build",
     "postinstall": "umi setup",
     "setup": "umi setup",
     "start": "npm run dev"
@@ -14,7 +16,8 @@
     "@umijs/max": "^4.4.11",
     "ahooks": "^3.8.5",
     "antd": "^5.24.7",
-    "umi": "^4.4.6"
+    "umi": "^4.4.6",
+    "zustand": "^5.0.5"
   },
   "devDependencies": {
     "@types/react": "^18.0.33",

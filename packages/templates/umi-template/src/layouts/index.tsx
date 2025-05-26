@@ -1,4 +1,6 @@
-import { customGetRoutes } from '@/utils';
+import { GITHUB_URL } from '@/constants';
+import useUserInfo from '@/hooks/useUserInfo';
+import { customGetRoutes, getFirstCharOfString } from '@/utils';
 import transformRoutesToMenu from '@/utils/layout/transformRoutesToMenu';
 import { GithubOutlined } from '@ant-design/icons';
 import { ProLayout } from '@ant-design/pro-components';
@@ -24,6 +26,8 @@ export default function GlobalLayout() {
 
   const menuData = useMemo(() => transformRoutesToMenu(routes), [routes]);
 
+  const userInfo = useUserInfo();
+
   return (
     <ConfigProvider
       theme={{
@@ -41,8 +45,9 @@ export default function GlobalLayout() {
             <NavLink to={item.path || '/'}>{dom}</NavLink>
           )}
           avatarProps={{
-            icon: 'K',
-            title: 'Kincy',
+            src: userInfo?.avatar,
+            icon: getFirstCharOfString(userInfo?.name),
+            title: userInfo?.name,
             size: 'small',
           }}
           actionsRender={() => [
@@ -63,7 +68,7 @@ export default function GlobalLayout() {
           <FloatButton
             icon={<GithubOutlined />}
             onClick={() => {
-              window.open('https://github.com/Jackson-Mseven/kc-cli');
+              window.open(GITHUB_URL);
             }}
           />
         </ProLayout>
