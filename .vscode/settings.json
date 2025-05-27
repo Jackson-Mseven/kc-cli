@@ -5,5 +5,5 @@
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "prettier.requireConfig": true,
-  "cSpell.words": ["ahooks", "antd", "kincy", "Sider", "umijs", "Wechat"]
+  "cSpell.words": ["ahooks", "antd", "flexbox", "kincy", "Sider", "umijs", "Wechat"]
 }
