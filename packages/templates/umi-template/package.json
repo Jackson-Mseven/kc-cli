@@ -8,7 +8,14 @@
     "build:analyze": "ANALYZE=1 umi build",
     "postinstall": "umi setup",
     "setup": "umi setup",
-    "start": "npm run dev"
+    "start": "npm run dev",
+    "lint": "umi lint",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,css,less}": [
+      "umi lint"
+    ]
   },
   "dependencies": {
     "@ant-design/icons": "5.x",
@@ -22,9 +29,14 @@
   "devDependencies": {
     "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
+    "@umijs/lint": "^4.4.11",
+    "eslint": "8.57.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.0.0",
     "prettier": "^2.8.8",
     "prettier-plugin-organize-imports": "^3.2.2",
     "prettier-plugin-packagejson": "^2.4.3",
+    "stylelint": "^14",
     "typescript": "^5.0.3"
   }
 }

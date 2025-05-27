@@ -2,22 +2,22 @@
 *,
 *::before,
 *::after {
-  box-sizing: border-box; /* 统一盒模型计算方式[4](@ref) */
+  box-sizing: border-box; /* 统一盒模型计算方式 */
   margin: 0;
   padding: 0;
-  font-family: inherit; /* 继承文档字体设置[5](@ref) */
+  font-family: inherit; /* 继承文档字体设置 */
 }
 
 html {
-  line-height: 1.15; /* 标准行高基准[5](@ref) */
-  -webkit-text-size-adjust: 100%; /* 禁止iOS字体缩放[5](@ref) */
+  line-height: 1.15; /* 标准行高基准 */
+  text-size-adjust: 100%; /* 禁止iOS字体缩放 */
 }
 
 /* ========== 元素默认样式清除 ========== */
 body {
   line-height: 1.5;
-  -webkit-font-smoothing: antialiased; /* 优化字体渲染[4](@ref) */
-  -webkit-tap-highlight-color: transparent; /* 移除移动端点击高亮[4](@ref) */
+  -webkit-font-smoothing: antialiased; /* 优化字体渲染 */
+  -webkit-tap-highlight-color: transparent; /* 移除移动端点击高亮 */
 }
 
 /* 清除列表样式 */
@@ -33,7 +33,7 @@ video {
   display: block;
   max-width: 100%;
   height: auto;
-  border-style: none; /* 移除IE边框[3](@ref) */
+  border-style: none; /* 移除IE边框 */
 }
 
 /* 表格样式重置 */
@@ -50,7 +50,7 @@ select,
 textarea {
   background-color: transparent;
   border-radius: 0;
-  border: 1px solid #ddd; /* 添加统一边框[4](@ref) */
+  border: 1px solid #ddd; /* 添加统一边框 */
 }
 
 /* 移除输入框轮廓 */
@@ -64,16 +64,18 @@ select:focus {
 a {
   color: inherit;
   text-decoration: none;
-  background-color: transparent; /* 移除IE背景色[5](@ref) */
+  background-color: transparent; /* 移除IE背景色 */
 }
 
 /* ========== 现代特性支持 ========== */
+
 /* 滚动条样式统一 */
 @media screen and (min-width: 768px) {
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
+
   ::-webkit-scrollbar-thumb {
     background-color: #c1c1c1;
     border-radius: 4px;
@@ -95,6 +97,7 @@ a {
   img {
     flex-shrink: 0;
   }
+
   select::-ms-expand {
     display: none;
   }
