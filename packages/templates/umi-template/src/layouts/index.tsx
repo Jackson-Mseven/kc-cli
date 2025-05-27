@@ -12,7 +12,10 @@ import logoWithoutText from '../../public/logo-without-text.webp';
 import logo from '../../public/logo.webp';
 import LangIcon from './components/Icons/LangIcon';
 import ThemeIcon from './components/Icons/ThemeIcon';
-import LoadingContext from './contexts/LoadingContext';
+import {
+  GlobalLoadingContextProvider,
+  useGlobalLoading,
+} from './contexts/LoadingContext';
 import { ProLayoutAction } from './types';
 
 export default function GlobalLayout() {
@@ -20,7 +23,7 @@ export default function GlobalLayout() {
   const routes = customGetRoutes();
   const actionRef = useRef<ProLayoutAction>(undefined);
 
-  const [loading, setLoading] = useState(false);
+  const { globalLoading } = useGlobalLoading();
   const [collapsed, setCollapsed] = useState(false);
   const [isDarkTheme, { toggle: toggleIsDarkTheme }] = useBoolean(false);
 
@@ -34,12 +37,12 @@ export default function GlobalLayout() {
         algorithm: isDarkTheme ? theme.darkAlgorithm : theme.defaultAlgorithm,
       }}
     >
-      <LoadingContext.Provider value={{ loading, setLoading }}>
+      <GlobalLoadingContextProvider>
         <ProLayout
           actionRef={actionRef}
           title="kc-umi-template"
           logo={collapsed ? logoWithoutText : logo}
-          loading={loading}
+          loading={globalLoading}
           menuDataRender={() => menuData}
           menuItemRender={(item, dom) => (
             <NavLink to={item.path || '/'}>{dom}</NavLink>
@@ -51,8 +54,9 @@ export default function GlobalLayout() {
             size: 'small',
           }}
           actionsRender={() => [
-            <LangIcon />,
+            <LangIcon key="lang" />,
             <ThemeIcon
+              key="theme"
               isDarkTheme={isDarkTheme}
               toggleIsDarkTheme={toggleIsDarkTheme}
             />,
@@ -72,7 +76,7 @@ export default function GlobalLayout() {
             }}
           />
         </ProLayout>
-      </LoadingContext.Provider>
+      </GlobalLoadingContextProvider>
     </ConfigProvider>
   );
 }
