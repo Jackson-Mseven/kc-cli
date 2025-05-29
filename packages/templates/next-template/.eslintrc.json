@@ -1,8 +1,18 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript", "prettier"],
+  "extends": ["next/core-web-vitals", "next/typescript", "plugin:prettier/recommended"],
+  "plugins": ["prettier"],
   "settings": {
     "next": {
       "rootDir": "packages/templates/next-template/"
     }
+  },
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "arrowParens": "always",
+        "bracketSameLine": false
+      }
+    ]
   }
 }

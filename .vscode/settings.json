@@ -8,5 +8,8 @@
   "cSpell.words": ["ahooks", "antd", "flexbox", "kincy", "Sider", "umijs", "Wechat"],
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[ignore]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
   }
 }
