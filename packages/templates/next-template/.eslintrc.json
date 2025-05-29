@@ -1,0 +1,8 @@
+{
+  "extends": ["next/core-web-vitals", "next/typescript", "prettier"],
+  "settings": {
+    "next": {
+      "rootDir": "packages/templates/next-template/"
+    }
+  }
+}

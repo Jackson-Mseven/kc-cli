@@ -9,7 +9,7 @@ module.exports = {
     { value: "test", name: "test: 测试代码" },
     { value: "chore", name: "chore: 构建或工具链变更" },
   ],
-  scopes: [{ name: "entry" }, { name: "cli" }, { name: "umi-template" }],
+  scopes: [{ name: "entry" }, { name: "cli" }, { name: "umi-template" }, { name: "next-template" }],
   messages: {
     type: "选择提交类型：",
     scope: "选择影响范围（可选）：",
