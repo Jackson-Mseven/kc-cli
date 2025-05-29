@@ -95,7 +95,7 @@ const create = async () => {
       break;
     }
     case "next":
-      console.log("Next项目模版正在开发中...敬请期待");
+      src = path.resolve(__dirname, "../../templates/next-template");
       break;
     default:
       throw new Error("错误的项目类型");
