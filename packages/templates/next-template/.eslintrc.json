@@ -1,11 +1,6 @@
 {
   "extends": ["next/core-web-vitals", "next/typescript", "plugin:prettier/recommended"],
-  "plugins": ["prettier"],
-  "settings": {
-    "next": {
-      "rootDir": "packages/templates/next-template/"
-    }
-  },
+  "plugins": ["prettier", "import", "simple-import-sort"],
   "rules": {
     "prettier/prettier": [
       "error",
@@ -13,6 +8,33 @@
         "arrowParens": "always",
         "bracketSameLine": false
       }
-    ]
+    ],
+    // 启用自动导入排序
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    // 确保导入语句在文件顶部
+    "import/first": "error",
+    // 禁止重复导入
+    "import/no-duplicates": "error",
+    // 确保导入路径大小写正确
+    "import/no-unresolved": "error",
+    // 禁止未使用的导入
+    "import/no-unused-modules": "error",
+    // 确保默认导出有名称
+    "import/no-anonymous-default-export": "error"
+  },
+  "settings": {
+    "next": {
+      "rootDir": "packages/templates/next-template/"
+    },
+    // 对于 TypeScript 项目
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true
+      }
+    }
   }
 }

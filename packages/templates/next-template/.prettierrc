@@ -10,7 +10,7 @@
   "tailwindConfig": "./tailwind.config.js",
   "overrides": [
     {
-      "files": "*.{ts,tsx}",
+      "files": "*.{js,mjs,ts,tsx}",
       "options": {
         "parser": "typescript"
       }
