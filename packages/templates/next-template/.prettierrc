@@ -7,7 +7,6 @@
   "plugins": [
     "prettier-plugin-tailwindcss"
   ],
-  "tailwindConfig": "./tailwind.config.js",
   "overrides": [
     {
       "files": "*.{js,mjs,ts,tsx}",
