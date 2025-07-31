@@ -4,6 +4,7 @@ const path = require("path");
 const cliProgress = require("cli-progress");
 const chalk = require("chalk");
 const figlet = require("figlet");
+const handlebars = require("handlebars");
 
 /**
  * 获取所有文件
@@ -14,6 +15,7 @@ const getAllFiles = async (dir) => {
   let files = [];
   const items = await fs.readdir(dir);
   for (const item of items) {
+    if (item === "node_modules") continue; // 跳过 node_modules
     const fullPath = path.join(dir, item);
     const stat = await fs.stat(fullPath);
     if (stat.isDirectory()) {
@@ -40,32 +42,44 @@ const calculateFileSize = async (files) => {
 };
 
 /**
- * 下载文件
+ * 渲染 .hbs 文件，其他文件直接复制
  * @param {string[]} files 文件列表
- * @param {number} totalSize 文件体积
  * @param {string} src 源目录
  * @param {string} dist 目标目录
+ * @param {Object} data 渲染所需的数据（例如：{ name: "my-project" }）
+ * @param {number} totalSize 文件体积
  */
-const copyFile = async (src, dist, files, totalSize) => {
+const renderTemplateFiles = async (src, dist, files, data, totalSize) => {
   const bar = new cliProgress.SingleBar({}, cliProgress.Presets.rect);
   let copied = 0;
+
   bar.start(totalSize, 0);
+
   for (const file of files) {
     const relPath = path.relative(src, file);
-    const destPath = path.join(dist, relPath);
-    await fs.ensureDir(path.dirname(destPath));
-    await new Promise((resolve, reject) => {
-      const readStream = fs.createReadStream(file);
-      const writeStream = fs.createWriteStream(destPath);
-      readStream.on("data", (chunk) => {
-        copied += chunk.length;
-        bar.update(copied);
-      });
-      readStream.on("end", resolve);
-      readStream.on("error", reject);
-      readStream.pipe(writeStream);
-    });
+    const isHbs = file.endsWith(".hbs");
+    const targetPath = isHbs
+      ? path.join(dist, relPath.replace(/\.hbs$/, ""))
+      : path.join(dist, relPath);
+
+    await fs.ensureDir(path.dirname(targetPath));
+
+    const stat = await fs.stat(file);
+    const size = stat.size;
+
+    if (isHbs) {
+      const content = await fs.readFile(file, "utf8");
+      const template = handlebars.compile(content);
+      const result = template(data);
+      await fs.writeFile(targetPath, result, "utf8");
+    } else {
+      await fs.copy(file, targetPath);
+    }
+
+    copied += size;
+    bar.update(copied);
   }
+
   bar.stop();
 };
 
@@ -97,19 +111,19 @@ const create = async () => {
     case "next":
       src = path.resolve(__dirname, "../../templates/next-template");
       break;
+    case "fastify":
+      src = path.resolve(__dirname, "../../templates/fastify-template");
+      break;
     default:
       throw new Error("错误的项目类型");
   }
   const dist = path.resolve(process.cwd(), name);
   console.log("正在读取文件...");
   const files = await getAllFiles(src);
-  console.log("读取文件完成!!!");
-  console.log("正在计算文件体积...");
+  console.log("正在计算模版体积...");
   const totalSize = await calculateFileSize(files);
-  console.log("计算文件体积完成!!!");
-  console.log("正在下载文件...");
-  await copyFile(src, dist, files, totalSize);
-  console.log("下载文件完成!!!");
+  console.log("正在下载模版...");
+  await renderTemplateFiles(src, dist, files, { name }, totalSize);
   console.log(
     chalk.cyan(
       figlet.textSync("kc-cli", {
