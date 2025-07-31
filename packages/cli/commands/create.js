@@ -97,7 +97,8 @@ const create = async () => {
       message: "What is the type of your project?",
       choices: [
         { title: "Umi", value: "umi" },
-        { title: "Next", value: "next" },
+        { title: "Next.js", value: "next" },
+        { title: "Fastify", value: "fastify" },
       ],
     },
   ]);
